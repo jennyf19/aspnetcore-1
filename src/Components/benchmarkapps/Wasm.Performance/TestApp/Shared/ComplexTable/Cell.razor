@@ -1,4 +1,4 @@
-@using WeatherForecast = Pages.GridRendering.WeatherForecast
+﻿@using WeatherForecast = Pages.GridRendering.WeatherForecast
 
 <td @attributes="@Attributes"
     @onclick="@(() => OnClick.Invoke(CellIndex))"
@@ -44,6 +44,43 @@
 
     [Parameter]
     public Func<int, Task> OnClick { get; set; }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        foreach (var param in parameters)
+        {
+            switch (param.Name)
+            {
+                case nameof(Item):
+                    Item = (WeatherForecast)param.Value;
+                    break;
+                case nameof(ParentTable):
+                    ParentTable = (TableComponent)param.Value;
+                    break;
+                case nameof(Field):
+                    Field = (string)param.Value;
+                    break;
+                case nameof(CellIndex):
+                    CellIndex = (int)param.Value;
+                    break;
+                case nameof(RowIndex):
+                    RowIndex = (int)param.Value;
+                    break;
+                case nameof(Selected):
+                    Selected = (bool)param.Value;
+                    break;
+                case nameof(FormatString):
+                    FormatString = (string)param.Value;
+                    break;
+                case nameof(OnClick):
+                    OnClick = (Func<int, Task>)param.Value;
+                    break;
+            }
+        }
+
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
 
     private protected Dictionary<string, object> Attributes
     {
