@@ -49,31 +49,71 @@
     {
         foreach (var param in parameters)
         {
-            switch (param.Name)
+            var paramName = param.Name;
+            switch (paramName[0])
             {
-                case nameof(Item):
-                    Item = (WeatherForecast)param.Value;
+                case 'I':
+                case 'i':
+                    if (string.Equals(paramName, "Item", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Item = (WeatherForecast)param.Value;
+                        continue;
+                    }
                     break;
-                case nameof(ParentTable):
-                    ParentTable = (TableComponent)param.Value;
+                case 'P':
+                case 'p':
+                    if (string.Equals(paramName, "ParentTable", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ParentTable = (TableComponent)param.Value;
+                    }
                     break;
-                case nameof(Field):
-                    Field = (string)param.Value;
+                case 'F':
+                case 'f':
+                    switch (param.Name[1])
+                    {
+                        case 'I':
+                        case 'i':
+                            if (string.Equals(paramName, "Field", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Field = (string)param.Value;
+                            }
+                            break;
+                        case 'O':
+                        case 'o':
+                            if (string.Equals(paramName, "FormatString", StringComparison.OrdinalIgnoreCase))
+                            {
+                                FormatString = (string)param.Value;
+                            }
+                            break;
+                    }
                     break;
-                case nameof(CellIndex):
-                    CellIndex = (int)param.Value;
+                case 'C':
+                case 'c':
+                    if (string.Equals(paramName, "CellIndex", StringComparison.OrdinalIgnoreCase))
+                    {
+                        CellIndex = (int)param.Value;
+                    }
                     break;
-                case nameof(RowIndex):
-                    RowIndex = (int)param.Value;
+                case 'R':
+                case 'r':
+                    if (string.Equals(paramName, "RowIndex", StringComparison.OrdinalIgnoreCase))
+                    {
+                        RowIndex = (int)param.Value;
+                    }
                     break;
-                case nameof(Selected):
-                    Selected = (bool)param.Value;
+                case 'S':
+                case 's':
+                    if (string.Equals(paramName, "Selected", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Selected = (bool)param.Value;
+                    }
                     break;
-                case nameof(FormatString):
-                    FormatString = (string)param.Value;
-                    break;
-                case nameof(OnClick):
-                    OnClick = (Func<int, Task>)param.Value;
+                case 'O':
+                case 'o':
+                    if (string.Equals(paramName, "OnClick", StringComparison.OrdinalIgnoreCase))
+                    {
+                        OnClick = (Func<int, Task>)param.Value;
+                    }
                     break;
             }
         }
