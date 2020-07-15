@@ -45,77 +45,88 @@
     [Parameter]
     public Func<int, Task> OnClick { get; set; }
 
+    private void WriteSingleParameter(string paramName, object value)
+    {
+        switch (paramName[0])
+        {
+            case 'I':
+            case 'i':
+                if (string.Equals(paramName, "Item", StringComparison.OrdinalIgnoreCase))
+                {
+                    Item = (WeatherForecast)value;
+                    return;
+                }
+                break;
+            case 'P':
+            case 'p':
+                if (string.Equals(paramName, "ParentTable", StringComparison.OrdinalIgnoreCase))
+                {
+                    ParentTable = (TableComponent)value;
+                    return;
+                }
+                break;
+            case 'F':
+            case 'f':
+                switch (paramName[1])
+                {
+                    case 'I':
+                    case 'i':
+                        if (string.Equals(paramName, "Field", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Field = (string)value;
+                            return;
+                        }
+                        break;
+                    case 'O':
+                    case 'o':
+                        if (string.Equals(paramName, "FormatString", StringComparison.OrdinalIgnoreCase))
+                        {
+                            FormatString = (string)value;
+                            return;
+                        }
+                        break;
+                }
+                break;
+            case 'C':
+            case 'c':
+                if (string.Equals(paramName, "CellIndex", StringComparison.OrdinalIgnoreCase))
+                {
+                    CellIndex = (int)value;
+                    return;
+                }
+                break;
+            case 'R':
+            case 'r':
+                if (string.Equals(paramName, "RowIndex", StringComparison.OrdinalIgnoreCase))
+                {
+                    RowIndex = (int)value;
+                    return;
+                }
+                break;
+            case 'S':
+            case 's':
+                if (string.Equals(paramName, "Selected", StringComparison.OrdinalIgnoreCase))
+                {
+                    Selected = (bool)value;
+                    return;
+                }
+                break;
+            case 'O':
+            case 'o':
+                if (string.Equals(paramName, "OnClick", StringComparison.OrdinalIgnoreCase))
+                {
+                    OnClick = (Func<int, Task>)value;
+                    return;
+                }
+                break;
+        }
+    }
+
     public override Task SetParametersAsync(ParameterView parameters)
     {
         foreach (var param in parameters)
         {
-            var paramName = param.Name;
-            switch (paramName[0])
-            {
-                case 'I':
-                case 'i':
-                    if (string.Equals(paramName, "Item", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Item = (WeatherForecast)param.Value;
-                        continue;
-                    }
-                    break;
-                case 'P':
-                case 'p':
-                    if (string.Equals(paramName, "ParentTable", StringComparison.OrdinalIgnoreCase))
-                    {
-                        ParentTable = (TableComponent)param.Value;
-                    }
-                    break;
-                case 'F':
-                case 'f':
-                    switch (param.Name[1])
-                    {
-                        case 'I':
-                        case 'i':
-                            if (string.Equals(paramName, "Field", StringComparison.OrdinalIgnoreCase))
-                            {
-                                Field = (string)param.Value;
-                            }
-                            break;
-                        case 'O':
-                        case 'o':
-                            if (string.Equals(paramName, "FormatString", StringComparison.OrdinalIgnoreCase))
-                            {
-                                FormatString = (string)param.Value;
-                            }
-                            break;
-                    }
-                    break;
-                case 'C':
-                case 'c':
-                    if (string.Equals(paramName, "CellIndex", StringComparison.OrdinalIgnoreCase))
-                    {
-                        CellIndex = (int)param.Value;
-                    }
-                    break;
-                case 'R':
-                case 'r':
-                    if (string.Equals(paramName, "RowIndex", StringComparison.OrdinalIgnoreCase))
-                    {
-                        RowIndex = (int)param.Value;
-                    }
-                    break;
-                case 'S':
-                case 's':
-                    if (string.Equals(paramName, "Selected", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Selected = (bool)param.Value;
-                    }
-                    break;
-                case 'O':
-                case 'o':
-                    if (string.Equals(paramName, "OnClick", StringComparison.OrdinalIgnoreCase))
-                    {
-                        OnClick = (Func<int, Task>)param.Value;
-                    }
-                    break;
-            }
+            WriteSingleParameter(param.Name, param.Value);
         }
 
         StateHasChanged();
