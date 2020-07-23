@@ -76,7 +76,7 @@ namespace Microsoft.AspNetCore.Http.Internal
                 for (var i = 0; i < cookies.Count; i++)
                 {
                     var cookie = cookies[i];
-                    var name = Uri.UnescapeDataString(cookie.Name.Value);
+                    var name = cookie.Name.Value;
                     var value = Uri.UnescapeDataString(cookie.Value.Value);
                     store[name] = value;
                 }
@@ -116,17 +116,20 @@ namespace Microsoft.AspNetCore.Http.Internal
             {
                 return false;
             }
-            return Store.ContainsKey(key);
+            return Store.ContainsKey(key)
+                || Store.ContainsKey(Uri.EscapeDataString(key));
         }
 
         public bool TryGetValue(string key, out string value)
         {
-            if (Store == null)
+            if (Store == null || key == null)
             {
                 value = null;
                 return false;
             }
-            return Store.TryGetValue(key, out value);
+
+            return Store.TryGetValue(key, out value)
+                || Store.TryGetValue(Uri.EscapeDataString(key), out value);
         }
 
         /// <summary>
